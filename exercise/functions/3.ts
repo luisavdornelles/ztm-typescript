@@ -19,15 +19,15 @@
 
 import { strict as assert } from "assert";
 
-function calculateAverage(a, b, c) {
+function calculateAverage(a: number, b: number, c: number): number {
     return sum(a, b, c) / 3;
 }
 
-function sum(a, b, c) {
+function sum(a: number, b: number, c: number): number {
     return a + b + c;
 }
 
-function isAboveThreshold(average, threshold) {
+function isAboveThreshold(average: number, threshold: number): boolean {
     return average > threshold;
 }
 

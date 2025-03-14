@@ -17,15 +17,15 @@
 
 import { strict as assert } from "assert";
 
-function isSenior(age) {
+function isSenior(age: number): boolean {
     return age >= 65;
 }
 
-function isLargePurchase(amount) {
+function isLargePurchase(amount: number): boolean {
     return amount > 99;
 }
 
-function isEligibleForDiscount(age, amount) {
+function isEligibleForDiscount(age: number, amount: number): boolean {
     return isSenior(age) || isLargePurchase(amount);
 }
 
