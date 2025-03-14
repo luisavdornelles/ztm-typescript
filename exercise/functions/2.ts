@@ -17,6 +17,18 @@
 
 import { strict as assert } from "assert";
 
+function calculateRectangleArea(width, height) {
+    return width * height;
+}
+
+function calculateRectanglePerimeter(width, height) {
+    return 2 * (width + height);
+}
+
+function calculateCircleArea(radius) {
+    const pi = 3.14;
+    return pi * (radius ** 2);
+}
 
 //
 // Test cases
