@@ -29,6 +29,19 @@
 /* eslint-disable */
 
 // Change this to different values to check your program behavior.
-const age = 25;
+const age = 57;
 
+if (age >= 18) {
+    console.log("OK to purchase");
+} else {
+    console.log("cannot purchase");
+}
+
+if (age < 18) {
+    console.log("child");
+} else if (age < 65) {
+    console.log("adult");
+} else {
+    console.log("senior");
+}
 

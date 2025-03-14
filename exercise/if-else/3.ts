@@ -19,19 +19,38 @@
 // - Change the initial constants to different values to check how your program
 //   behaves.
 
+import { get } from "core-js/core/dict";
+
 /* eslint-disable */
 
 // Change this to different values to check your program behavior.
-const temperature = 15; // Example: 15°C
+const temperature = 25; // Example: 15°C
 
 //
 // Put your code here to check the current temperature
 //
 
 // Change this to different values to check your program behavior.
-const isRaining = true;
+const isRaining = false;
 
 //
 // Put your code here to check if it's raining
 //
 //
+
+function getTemperatureRecommendation(temperature: number): string {
+    if (temperature < 10) {
+        return  "It's cold, wear a coat.";
+    } else if (temperature <= 20) {
+        return "Mild weather, bring a light jacket.";
+    } else {
+        return "It's warm, no need for a coat.";
+    }
+}
+
+function getPrecipitationRecommendation(isRaining: boolean): string {
+    return isRaining ? "Don't forget your umbrella!" : "No umbrella needed." ;
+}
+
+console.log(getTemperatureRecommendation(temperature));
+console.log(getPrecipitationRecommendation(isRaining));
