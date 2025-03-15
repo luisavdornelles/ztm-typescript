@@ -14,14 +14,22 @@
 import { strict as assert } from "assert";
 
 const scores: number[] = [15, 42, 23, 8, 37, 56, 14];
+scores.sort((a, b) => { return a - b });
+
+const getMaxScore = (array: number[]) => {
+    return array[array.length - 1];
+}
+
+const getMinScore = (array: number[]) => {
+    return array[0];
+}
 
 // Replace the 0 with a function call to your arrow functions.
-const maxScore = 0;
-const minScore = 0;
-const totalSum = 0;
+const maxScore = getMaxScore(scores);
+const minScore = getMinScore(scores);
+const totalSum = scores.reduce((a, b) => a + b, 0);
 
 // Test cases. These will confirm if your answer is correct.
 assert.equal(maxScore, 56);
 assert.equal(minScore, 8);
 assert.equal(totalSum, 195);
-

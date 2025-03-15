@@ -13,7 +13,7 @@
 //   [4,       2,      3]         // ranks
 //   ["brown", "gold", "purple"]  // team colors
 //
-//   Team "brown" ranked 8 while team "gold" ranked 2.
+//   Team "brown" ranked 4 while team "gold" ranked 2.
 // 
 // Produce a program that can sort the two arrays in order from rank 1 to rank
 // 4. Using the example from above, the target arrays should look like this:
@@ -53,4 +53,22 @@ import { strict as assert } from "assert";
 const ranking = [3, 4, 1, 2];
 const teams = ["red", "blue", "green", "yellow"];
 
+const newRanking: number[] = [];
+const newTeams: string[] = [];
 
+let rank;
+let team;
+
+for (let i = 0; i < ranking.length; i++) {
+    rank = ranking[i];
+    team = teams[i];
+
+    newRanking[rank - 1] = rank;
+    newTeams[rank - 1] = team;
+}
+
+newRanking.push(5);
+newTeams.push("pink");
+
+assert.deepEqual(newRanking, [1, 2, 3, 4, 5]);
+assert.deepEqual(newTeams, ["green", "yellow", "red", "blue", "pink"]);
