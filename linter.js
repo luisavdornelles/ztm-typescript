@@ -14,6 +14,11 @@ switch (type) {
         config.file = "**/*.ts";
         config.params = [];
         break;
+    case "typecheck":
+        config.command = "pnpm typecheck";
+        config.file = "**/*.ts";
+        config.params = [];
+        break;
     default:
         console.error("Invalid type");
         process.exit(1);
@@ -29,6 +34,14 @@ if (diff.stderr && diff.stderr.toString()) {
 
 if (diff.stdout && diff.stdout.toString()) {
     let diffArrayFiles = diff.stdout.toString().trim().split("\n");
+
+    if (type === "typecheck") {
+        diffArrayFiles = diffArrayFiles.map((file) => {
+            const pathParts = file.split("/"); // Split the file path by "/"
+            pathParts.pop(); // Remove the last part (file name)
+            return pathParts.join("/");
+        });
+    }
 
     // Running the Linter command base on the type configuration
     const lintResult = spawnSync(config.command, config.params.concat(diffArrayFiles), { shell: true });
