@@ -15,4 +15,19 @@
 
 /* eslint-disable */
 
+type Name = string;
+type Population = number;
 
+const cities: Map<Name, Population> = new Map();
+
+cities.set("Toronto", 6200000);
+cities.set("Montreal", 4200000);
+cities.set("Vancouver", 2700000);
+
+console.log(cities.get("Montreal"));
+
+cities.set("Vancouver", 2800000);
+
+for (const [name, population] of cities) {
+    console.log(`The city of ${name} has ${population} residents`);
+}
