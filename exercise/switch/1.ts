@@ -13,7 +13,7 @@
 // Modify the existing `weightClass` variable to confirm that your code works
 // as expected.
 
-// import { strict as assert } from "assert";
+import { strict as assert } from "assert";
 
 const weightClass = parseInt("11");
 
