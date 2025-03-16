@@ -13,3 +13,53 @@ import { strict as assert } from "assert";
 // Useful links:
 // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
 //
+
+// `typeof` only works on basic types that exist in JavaScript.
+// Type predicates allow us to work with custom types that we create
+// in TypeScript.
+
+interface Square {
+    kind: "square";
+    size: number;
+}
+  
+interface Circle {
+    kind: "circle";
+    radius: number;
+}
+  
+type Shape = Square | Circle;
+  
+// The `shape is Square` is the type predicate.
+// If the function returns `true`, then the input data `shape` is of type `Square`.
+// If the function returns `false`, then the input data `shape` is _not_ a `Square`.
+function isSquare(shape: Shape): shape is Square {
+    // We can check to see if a particular field is equal to something:
+    return shape.kind === "square";
+}
+  
+function isCircle(shape: Shape): shape is Circle {
+    // We can check if the type contains a member using a type guard:
+    return "radius" in shape;
+}
+  
+function calculateArea(shape: Shape): number {
+    // We can use the type predicate function as a type guard:
+    if (isSquare(shape)) {
+      // TypeScript now knows that `shape` is a `Square` type, so we get safe
+      // access to the `size` field:
+      return shape.size ** 2;
+    }
+    if (isCircle(shape)) {
+      return Math.PI * shape.radius ** 2;
+    }
+  
+    throw "unknown shape";
+  }
+  
+  const square: Shape = { kind: "square", size: 5 };
+  const circle: Shape = { kind: "circle", radius: 2 };
+  
+  assert.equal(calculateArea(square), 25);
+  assert.equal(calculateArea(circle), Math.PI * 2 ** 2);
+  
