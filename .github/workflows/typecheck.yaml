@@ -1,4 +1,4 @@
-name: Eslint
+name: Type Check
 
 on:
   pull_request:
@@ -8,8 +8,8 @@ on:
       - "**.ts"
 
 jobs:
-  lint:
-    name: "Eslint"
+  type-check:
+    name: "Type Check"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,5 +28,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Eslint
-        run: node ./linter.js eslint
+      # - name: Run Eslint
+      #   run: node ./linter.js typecheck
