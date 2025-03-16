@@ -20,7 +20,7 @@ switch (type) {
 }
 
 // Get diff files
-const diff = spawnSync("git", ["diff", "--name-only", "--diff-filter=d", "origin/main", `-- "${config.file}  "`], { shell: true });
+const diff = spawnSync("git", ["diff", "--name-only", "--diff-filter=d", "origin/main", "-- \"" + config.file + "\""], { shell: true });
 
 if (diff.stderr && diff.stderr.toString()) {
     console.error(`Error running git diff: ${diff.stderr.toString()}`);
