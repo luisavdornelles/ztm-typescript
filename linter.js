@@ -30,13 +30,15 @@ if (diff.stderr && diff.stderr.toString()) {
 if (diff.stdout && diff.stdout.toString()) {
     let diffArrayFiles = diff.stdout.toString().trim().split("\n");
 
+    console.log("Diff Files: ", diffArrayFiles);
+
     // Running the Linter command base on the type configuration
     const lintResult = spawnSync(config.command, config.params.concat(diffArrayFiles), { shell: true });
     if (lintResult.stderr && lintResult.stderr.toString()) {
         console.error(`Error running linter: ${lintResult.stderr.toString()}`);
         process.exit(1);
     }
-    
+
     // If there are errors returned by the Linter
     if ("stdout" in lintResult && lintResult.stdout && lintResult.stdout.toString()) {
         console.error(lintResult.stdout.toString());
