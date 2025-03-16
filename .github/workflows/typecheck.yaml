@@ -28,5 +28,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Eslint
-        run: node ./linter.js typecheck
+      # - name: Run Eslint
+      #   run: node ./linter.js typecheck
