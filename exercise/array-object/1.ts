@@ -27,7 +27,8 @@
 
 import { strict as assert } from "assert";
 
-type Student = {
+// exercise is aware that this is not the best practice
+type Student = { // eslint-disable-line
   name: string;
   enrollments: string[];
 };
@@ -51,7 +52,7 @@ function removeSection(student: Student, section: string): void {
   student.enrollments.splice(indexToRemove, 1);
 }
 
-function totalEnrollments(student: Student) {
+function totalEnrollments(student: Student): number {
   return student.enrollments.length;
 }
 

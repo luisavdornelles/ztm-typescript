@@ -22,7 +22,7 @@ const users = [
 
 let i = 0;
 while (i < users.length) {
-  let user = users[i];
+  const user = users[i];
   user.total = user.durations.reduce((a, b) => a + b, 0);
   i++;
 }

@@ -28,7 +28,7 @@ const vendors = [
 
 
 // perform step 1 here
-const smallSpaces: object[] = vendors.filter((vendor) => { return vendor.size <= 10 });
+const smallSpaces: object[] = vendors.filter((vendor) => vendor.size <= 10 );
 
 assert.deepStrictEqual(smallSpaces, (() => {
   const cloned = Array.from(vendors);
@@ -37,7 +37,7 @@ assert.deepStrictEqual(smallSpaces, (() => {
 })());
 
 // perform step 2 here
-const sizeExists: boolean = vendors.some((vendor) => { return vendor.size === 13 });
+const sizeExists: boolean = vendors.some((vendor) => vendor.size === 13 );
 
 assert.equal(sizeExists, true);
 

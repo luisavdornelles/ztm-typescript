@@ -26,3 +26,5 @@ function printFullName(): void {
 }
 
 printFullName();
+
+assert.equal(getFullName(), "Luisa VD");

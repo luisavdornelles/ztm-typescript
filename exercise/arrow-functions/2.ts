@@ -13,7 +13,7 @@ import { strict as assert } from "assert";
 
 const scores: number[] = [85, 92, 88, 74, 91, 77, 89, 95];
 
-const getAverage = (array: number[]) => {
+const getAverage = (array: number[]): number => {
     const sum = array.reduce((a, b) => a + b, 0);
     return sum / array.length;
 }
@@ -22,7 +22,7 @@ const getMedian = (array: number[]): number => {
     const isPar = array.length % 2 === 0;
     const halfLength = array.length / 2;
     
-    array.sort((a, b) => { return a - b });
+    array.sort((a, b) => a - b);
     
     if (isPar) {
         const lowerMedian = array[halfLength - 1];

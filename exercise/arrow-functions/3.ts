@@ -12,7 +12,8 @@
 
 import { strict as assert } from "assert";
 
-type Event = {
+// exercise is aware that this is not the best practice
+type Event = { // eslint-disable-line
   type: string;
   name: string;
 }
@@ -25,7 +26,7 @@ const events: Event[] = [
 ];
 
 // Replace the `null` with a function call to your arrow functions.
-const clickEvents = events.filter((event) => { return event.type === "click" });
+const clickEvents = events.filter((event) => event.type === "click");
 const clickEventCount = clickEvents.length;
 
 // Test cases. These will confirm if your answer is correct.

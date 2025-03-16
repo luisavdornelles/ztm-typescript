@@ -14,15 +14,10 @@
 import { strict as assert } from "assert";
 
 const scores: number[] = [15, 42, 23, 8, 37, 56, 14];
-scores.sort((a, b) => { return a - b });
+scores.sort((a, b) => a - b);
 
-const getMaxScore = (array: number[]) => {
-    return array[array.length - 1];
-}
-
-const getMinScore = (array: number[]) => {
-    return array[0];
-}
+const getMaxScore = (array: number[]): number => array[array.length - 1];
+const getMinScore = (array: number[]): number => array[0];
 
 // Replace the 0 with a function call to your arrow functions.
 const maxScore = getMaxScore(scores);
