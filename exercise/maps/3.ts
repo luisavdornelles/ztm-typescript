@@ -29,7 +29,7 @@ interface Car {
 type License = string;
 
 class CarRental {
-  private cars: Map<License, Car> = new Map();
+  private cars = new Map<License, Car>();
 
   addCar(license: License, model: string, isAvailable: boolean): void {
     this.cars.set(license, { model, isAvailable });
@@ -42,7 +42,7 @@ class CarRental {
   updateAvailability(license: License, isAvailable: boolean): boolean {
     const car = this.getCar(license);
 
-    if (!car) {
+    if (car === undefined) {
       console.log(`Car with license plate ${license} not found.`);
       return false;
     }
