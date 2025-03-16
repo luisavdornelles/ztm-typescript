@@ -19,8 +19,6 @@
 // - Change the initial constants to different values to check how your program
 //   behaves.
 
-import { get } from "core-js/core/dict";
-
 /* eslint-disable */
 
 // Change this to different values to check your program behavior.
