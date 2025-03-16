@@ -1,4 +1,4 @@
-// JavaScript
+// JavaScript test
 
 function addItemToCart(cart, item, quantity) {
   if (!cart[item]) {
