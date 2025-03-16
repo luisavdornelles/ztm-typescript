@@ -13,12 +13,31 @@ import { strict as assert } from "assert";
 
 const scores: number[] = [85, 92, 88, 74, 91, 77, 89, 95];
 
+const getAverage = (array: number[]) => {
+    const sum = array.reduce((a, b) => a + b, 0);
+    return sum / array.length;
+}
+
+const getMedian = (array: number[]): number => {
+    const isPar = array.length % 2 === 0;
+    const halfLength = array.length / 2;
+    
+    array.sort((a, b) => { return a - b });
+    
+    if (isPar) {
+        const lowerMedian = array[halfLength - 1];
+        const upperMedian = array[halfLength];
+
+        return (lowerMedian + upperMedian) / 2;
+    } else {
+        return array[Math.ceil(halfLength)];
+    }
+}
+
 // Replace the 0 with a function call to your arrow functions.
-const average = 0;
-const median = 0;
+const average = getAverage(scores);
+const median = getMedian(scores);
 
 // Test cases. These will confirm if your answer is correct.
 assert.equal(average, 86.375);
 assert.equal(median, 88.5);
-
-

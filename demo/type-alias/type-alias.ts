@@ -10,3 +10,26 @@ import { strict as assert } from "assert";
 // Useful links:
 // https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases
 //
+
+// We can use a type alias as a way to make our code clearer:
+type PersonName = string;
+
+// Type aliases are _just_ aliases. This means anywhere we see the
+// type `PersonName`, we can use a `string` in it's place.
+// These two are the same type (string):
+const myName: PersonName = "Luisa";
+const alsoMyName: string = "Luisa";
+
+// example of a function with poor naming:
+function print(thing: string) {
+  console.log(`Name is ${thing}`);
+}
+
+print("a house");
+
+// using proper naming and type aliases:
+function printName(name: PersonName) {
+  console.log(`Name is ${name}`);
+}
+
+printName(myName);

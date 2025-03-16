@@ -24,9 +24,9 @@ const isLoggedIn1 = true;
 const hasAcceptedTerms1 = true;
 const isAdmin1 = false;
 
-// Replace `null` with a boolean expression.
-const hasAccess1 = null;
-assert.equal(hasAccess1, true);  // Should be true since the user is logged in and has accepted terms
+// // Replace `null` with a boolean expression.
+// const hasAccess1 = (isLoggedIn1 && hasAcceptedTerms1) || isAdmin1;
+// assert.equal(hasAccess1, true);  // Should be true since the user is logged in and has accepted terms
 
 
 // Scenario 2
@@ -34,9 +34,9 @@ const isLoggedIn2 = true;
 const hasAcceptedTerms2 = false;
 const isAdmin2 = false;
 
-// Replace `null` with a boolean expression.
-const hasAccess2 = null;
-assert.equal(hasAccess2, false);  // Should be false since the user has not accepted terms and is not an admin
+// // Replace `null` with a boolean expression.
+// const hasAccess2 = (isLoggedIn2 && hasAcceptedTerms2) || isAdmin2;
+// assert.equal(hasAccess2, false);  // Should be false since the user has not accepted terms and is not an admin
 
 
 // Scenario 3
@@ -44,8 +44,16 @@ const isLoggedIn3 = false;
 const hasAcceptedTerms3 = false;
 const isAdmin3 = true;
 
-// Replace `null` with a boolean expression.
-const hasAccess3 = null;
+// // Replace `null` with a boolean expression.
+// const hasAccess3 = (isLoggedIn3 && hasAcceptedTerms3) || isAdmin3;
+// assert.equal(hasAccess3, true);  // Should be true since the user is an admin
+
+function canAccessFeature(isLoggedIn, hasAcceptedTerms, isAdmin) {
+    return (isLoggedIn && hasAcceptedTerms) || isAdmin;
+}
+const hasAccess1 = canAccessFeature(isLoggedIn1, hasAcceptedTerms1, isAdmin1);
+assert.equal(hasAccess1, true);  // Should be true since the user is logged in and has accepted terms
+const hasAccess2 = canAccessFeature(isLoggedIn2, hasAcceptedTerms2, isAdmin2);
+assert.equal(hasAccess2, false);  // Should be false since the user has not accepted terms and is not an admin
+const hasAccess3 = canAccessFeature(isLoggedIn3, hasAcceptedTerms3, isAdmin3);
 assert.equal(hasAccess3, true);  // Should be true since the user is an admin
-
-

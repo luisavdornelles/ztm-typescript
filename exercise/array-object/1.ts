@@ -27,14 +27,42 @@
 
 import { strict as assert } from "assert";
 
-const alice = {
+type Student = {
+  name: string;
+  enrollments: string[];
+};
+
+const alice: Student = {
   name: "Alice",
   enrollments: [],
 };
 
-const bob = {
+const bob: Student = {
   name: "Bob",
   enrollments: ["Algorithms"],
 }
 
+function addSection(student: Student, section: string): void {
+  student.enrollments.push(section);
+}
 
+function removeSection(student: Student, section: string): void {
+  const indexToRemove = student.enrollments.indexOf(section);
+  student.enrollments.splice(indexToRemove, 1);
+}
+
+function totalEnrollments(student: Student) {
+  return student.enrollments.length;
+}
+
+addSection(alice, "CompSci");
+addSection(alice, "Networking");
+assert.deepEqual(alice, { name: "Alice", enrollments: [ "CompSci", "Networking" ] });
+
+removeSection(alice, "CompSci");
+assert.deepEqual(alice, { name: "Alice", enrollments: [ "Networking" ] });
+
+addSection(bob, "Networking");
+assert.deepEqual(bob, { name: "Bob", enrollments: [ "Algorithms", "Networking" ] });
+
+assert.equal(totalEnrollments(bob), 2);

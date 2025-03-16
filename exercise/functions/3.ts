@@ -19,6 +19,17 @@
 
 import { strict as assert } from "assert";
 
+function calculateAverage(a: number, b: number, c: number): number {
+    return sum(a, b, c) / 3;
+}
+
+function sum(a: number, b: number, c: number): number {
+    return a + b + c;
+}
+
+function isAboveThreshold(average: number, threshold: number): boolean {
+    return average > threshold;
+}
 
 //
 // Test cases

@@ -14,4 +14,18 @@ import { strict as assert } from "assert";
 
 const scores = [90, 77, 83, 96, 76, 88];
 
+function getAverage(array: number[]): number {
+    let sum: number = 0;
+    
+    for (let item of array) {
+        sum += item;
+    }
+    
+    return sum / array.length;
+}
 
+assert.equal(getAverage(scores), 85);
+
+scores.push(92);
+
+assert.equal(getAverage(scores), 86);

@@ -23,7 +23,7 @@
 /* eslint-disable */
 
 // Change this to different values to check your program behavior.
-const currentTime = 1000; // Example: 10 AM
+const currentTime = 800; // Example: 10 AM
 
 //
 // Put your code here to check if the store is open
@@ -31,9 +31,28 @@ const currentTime = 1000; // Example: 10 AM
 
 // Change these to different values to check your program behavior.
 const userBalance = 50;
-const itemPrice = 40;
+const itemPrice = 90;
 
 //
 // Put your code here to check if the user has enough money to make a purchase
 //
 //
+
+function isStoreOpen(time: number): boolean {
+    return time >= 900 && time < 2100
+}
+
+function getStoreText(time: number): string {
+    return isStoreOpen(time) ? "Store is open": "Store is closed";
+}
+
+function hasFunds(userBalance: number, itemPrice: number): boolean {
+    return userBalance >= itemPrice;
+}
+
+function getFundsText(userBalance: number, itemPrice: number): string {
+    return hasFunds(userBalance, itemPrice) ? "Enough funds": "Insufficient funds";
+}
+
+console.log(getStoreText(currentTime));
+console.log(getFundsText(userBalance, itemPrice));

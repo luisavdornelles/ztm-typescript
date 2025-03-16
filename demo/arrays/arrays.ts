@@ -11,3 +11,10 @@ import { strict as assert } from "assert";
 // Useful links:
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 //
+
+const numbers: number[] = [1, 2, 3];
+let letters: string[] = ["a", "b", "c"];
+
+let lists: number[][] = [[1, 2], [3, 4]];
+
+let objects: object[] = [{test: "hello"}, {test: "bye"}];
