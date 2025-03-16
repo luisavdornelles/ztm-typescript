@@ -10,7 +10,12 @@ const config = {};
 
 switch (type) {
     case "eslint":
-        config.command = "eslint";
+        config.command = "pnpm eslint";
+        config.file = "**/*.ts";
+        config.params = [];
+        break;
+    case "typecheck":
+        config.command = "pnpm typecheck";
         config.file = "**/*.ts";
         config.params = [];
         break;
@@ -20,7 +25,7 @@ switch (type) {
 }
 
 // Get diff files
-const diff = spawnSync("git", ["diff", "--name-only", "--diff-filter=d", "origin/main", `-- "${config.file}  "`], { shell: true });
+const diff = spawnSync("git", ["diff", "--name-only", "--diff-filter=d", "origin/main", "-- \"" + config.file + "\""], { shell: true });
 
 if (diff.stderr && diff.stderr.toString()) {
     console.error(`Error running git diff: ${diff.stderr.toString()}`);
@@ -30,13 +35,21 @@ if (diff.stderr && diff.stderr.toString()) {
 if (diff.stdout && diff.stdout.toString()) {
     let diffArrayFiles = diff.stdout.toString().trim().split("\n");
 
+    if (type === "typecheck") {
+        diffArrayFiles = diffArrayFiles.map((file) => {
+            const pathParts = file.split("/"); // Split the file path by "/"
+            pathParts.pop(); // Remove the last part (file name)
+            return pathParts.join("/");
+        });
+    }
+
     // Running the Linter command base on the type configuration
     const lintResult = spawnSync(config.command, config.params.concat(diffArrayFiles), { shell: true });
     if (lintResult.stderr && lintResult.stderr.toString()) {
         console.error(`Error running linter: ${lintResult.stderr.toString()}`);
         process.exit(1);
     }
-    
+
     // If there are errors returned by the Linter
     if ("stdout" in lintResult && lintResult.stdout && lintResult.stdout.toString()) {
         console.error(lintResult.stdout.toString());
