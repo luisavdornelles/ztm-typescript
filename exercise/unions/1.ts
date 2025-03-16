@@ -11,10 +11,18 @@
 //   - If status is a `number`, print "Task status code: " followed by the
 //     status code.
 
+type TaskStatus = string | number;
 
+function logTaskStatus(data: TaskStatus): void {
+    if (typeof data === "string") {
+        console.log(`Task status message: ${data}`);
+      } else if (typeof data === "number") {
+        console.log(`Task status code: ${data}`);
+      }
+}
 
-logTaskStatus("Completed"); // Output: Task status message: Completed
-logTaskStatus(200);         // Output: Task status code: 200
+logTaskStatus("Completed");   // Output: Task status message: Completed
+logTaskStatus(200);           // Output: Task status code: 200
 logTaskStatus("In Progress"); // Output: Task status message: In Progress
-logTaskStatus(404);         // Output: Task status code: 404
+logTaskStatus(404);           // Output: Task status code: 404
 
