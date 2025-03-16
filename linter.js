@@ -27,6 +27,9 @@ if (diff.stderr && diff.stderr.toString()) {
     process.exit(1);
 }
 
+console.log("Diff: ", diff.stdout.toString());
+console.log("Diff raw: ", diff);
+
 if (diff.stdout && diff.stdout.toString()) {
     let diffArrayFiles = diff.stdout.toString().trim().split("\n");
 
