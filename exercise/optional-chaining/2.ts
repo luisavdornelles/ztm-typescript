@@ -52,17 +52,22 @@ const bookReview: BookReview = {
 };
 
 // Access the first reviewer's name
+const firstReviewerName: string | undefined = bookReview.reviews?.[0].reviewer?.name;
 assert.equal(firstReviewerName, "John Doe");
 
 // Access the first reviewer's age
+const firstReviewerAge: number | undefined = bookReview.reviews?.[0].reviewer?.age;
 assert.equal(firstReviewerAge, 30);
 
 // Access the rating of the second review
+const secondReviewRating: number | undefined = bookReview.reviews?.[1].rating;
 assert.equal(secondReviewRating, 5);
 
 // Access the comment of the second review (does not exist)
+const secondReviewComment: string | undefined = bookReview.reviews?.[1].details?.comment;
 assert.equal(secondReviewComment, undefined);
 
 // Access the date of the first review
+const firstReviewDate: string | undefined = bookReview.reviews?.[0].details?.date;
 assert.equal(firstReviewDate, "2024-08-10");
 

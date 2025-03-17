@@ -23,4 +23,19 @@ const box: Product = {
   name: "Box"
 };
 
+function getPrice(prod: Product): string {
+  if (prod.price?.amount !== undefined) {
+    return prod.price.amount.toString();
+  } else {
+    return "not for sale";
+  }
+}
 
+const boxPrice = getPrice(box);
+const phonePrice = getPrice(phone);
+
+console.log(boxPrice);
+console.log(phonePrice);
+
+assert.equal(boxPrice, "not for sale");
+assert.equal(phonePrice, "300");
