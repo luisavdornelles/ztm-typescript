@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // jest
 
 import { concat, div, slowString, failedString } from "./strings"
