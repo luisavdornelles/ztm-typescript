@@ -1,8 +1,11 @@
+import { fetchLocationData } from "./location";
+import type { LocationInfo } from "./location";
+
 const GEOCODE_API_URL = "https://geocode.maps.co/search";
 
+// pnpm run weather LOCATION
 async function main(): Promise<number> {
-    // pnpm run weather LOCATION
-
+    // enforce correct usage
     if (process.argv.length !== 3) {
         console.error("usage: weather.ts \"LOCATION\"");
         return 1;
@@ -12,11 +15,23 @@ async function main(): Promise<number> {
     const location = process.argv[2];
     // convert to lat/lon
 
+    let locationInfo: LocationInfo;
+    try {
+        locationInfo = await fetchLocationData(GEOCODE_API_URL, location);
+    } catch (e) {
+        console.error(e);
+        return 1;
+    }
+
     // fetch weather data
 
     // display data
 
-    console.log(process.argv);
+
+    // test logging
+    console.log(locationInfo);
+
+
     return await Promise.resolve(0);
 }
 
