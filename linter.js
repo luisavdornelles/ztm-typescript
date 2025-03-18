@@ -12,7 +12,7 @@ switch (type) {
     case "eslint":
         config.command = "pnpm eslint";
         config.file = "**/*.ts";
-        config.params = [];
+        config.params = ["--no-ignore"];
         break;
     case "typecheck":
         config.command = "pnpm typecheck";

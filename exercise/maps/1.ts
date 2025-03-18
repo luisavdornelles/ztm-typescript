@@ -53,4 +53,24 @@ const employees = [
   { id: 20, name: "William" },
 ];
 
+class TimeClock {
+  employees: Map<EmployeeId, Employee>;
 
+  constructor(employees: Employee[]) {
+    const employeeMap = new Map<EmployeeId, Employee>();
+    for (const emp of employees) {
+      employeeMap.set(emp.id, emp);
+    }
+    this.employees = employeeMap;
+  }
+
+  exists(id: EmployeeId): boolean {
+    return this.employees.has(id);
+  }
+
+}
+
+const timeClock = new TimeClock(employees);
+
+assert.deepEqual(timeClock.exists(17), true);
+assert.deepEqual(timeClock.exists(99), false);

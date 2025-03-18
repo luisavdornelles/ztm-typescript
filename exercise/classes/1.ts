@@ -21,17 +21,44 @@
 
 import { strict as assert } from "assert";
 
+class Book {
+    title: string;
+    author: string;
+    isCheckedOut = false;
+
+    constructor(title: string, author: string) {
+        this.title = title;
+        this.author = author;
+    }
+
+    checkOut(): void {
+        this.isCheckedOut = true;
+    }
+
+    returnBook(): void {
+        this.isCheckedOut = false;
+    }
+
+    displayInfo(): void {
+        const status = this.isCheckedOut ? "checked out" : "available"
+        console.log(`The book "${this.title}" by ${this.author} is currently ${status}`);
+    }
+}
+
 // Create an instance of the Book class.
 //
 // Replace `null` with your class instance.
 //
-const myBook = null;
+const myBook = new Book("Anna Karenina", "Leo Tolstoy");
 
 // Put your method calls to "check out" a book here.
 // 
+myBook.checkOut();
 assert.equal(myBook.isCheckedOut, true);
 
 // Put your method calls to "return" a book here.
 //
+myBook.returnBook();
 assert.equal(myBook.isCheckedOut, false);
 
+myBook.displayInfo();

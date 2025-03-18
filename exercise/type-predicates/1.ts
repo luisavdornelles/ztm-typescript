@@ -12,6 +12,25 @@
 //   - Ensure the type-specific processing is handled correctly.
 
 
+type Input = number | string;
+
+function isNumber(input: Input): input is number {
+    return typeof input === "number";
+}
+
+function isString(input: Input): input is string {
+    return typeof input === "string";
+}
+
+
+function processInput(input: Input): void {
+    if (isString(input)) {
+        console.log(`Processing string: ${input}`);
+      } else if (isNumber(input)) {
+        console.log(`Processing number: ${input}`);
+      }
+}
+
 // Test cases
 processInput("Hello, world!");  // Output: Processing string: Hello, world!
 processInput(42);               // Output: Processing number: 42

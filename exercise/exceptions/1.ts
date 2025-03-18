@@ -12,4 +12,21 @@
 
 import { strict as assert } from "assert";
 
+class Input {
+    value: string;
 
+    constructor(input: string, maxLength: number) {
+        if (input.length > maxLength) {
+            throw new Error (`value length should be <= ${maxLength}`);
+        }
+        this.value = input;
+    }
+}
+
+const ok = new Input("ok", 5);
+console.log(ok);
+
+assert.throws(() => {
+    const crash = new Input("crash", 2);
+    console.log(crash);
+});

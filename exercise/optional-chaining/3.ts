@@ -28,6 +28,10 @@ interface CustomerAccount {
 // Write your function here
 //
 
+function getTicketComments(customerAcc: CustomerAccount, ticketId: string): string[] {
+  const ticket: SupportTicket | undefined = customerAcc.supportTickets?.find((tick) => tick.ticketId === ticketId);
+  return ticket?.details?.comments ?? [];
+}
 
 // Test cases
 const testAccount: CustomerAccount = {

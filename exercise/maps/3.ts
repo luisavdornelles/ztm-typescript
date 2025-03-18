@@ -26,6 +26,42 @@ interface Car {
 // Add your code here
 //
 
+type License = string;
+
+class CarRental {
+  private cars = new Map<License, Car>();
+
+  addCar(license: License, model: string, isAvailable: boolean): void {
+    this.cars.set(license, { model, isAvailable });
+  }
+
+  getCar(license: License): Car | undefined {
+    return this.cars.get(license);
+  }
+
+  updateAvailability(license: License, isAvailable: boolean): boolean {
+    const car = this.getCar(license);
+
+    if (car === undefined) {
+      console.log(`Car with license plate ${license} not found.`);
+      return false;
+    }
+
+    if (car.isAvailable === isAvailable) {
+      return false;
+    }
+
+    car.isAvailable = isAvailable;
+    return true;
+  }
+
+  printAllCars(): void {
+    for (const [license, car] of this.cars) {
+      console.log(`${license} - ${car.model} - ${car.isAvailable}`);
+    }
+  }
+}
+
 // Test cases:
 const testRental = new CarRental();
 testRental.addCar("test1", "car1", true);
@@ -35,4 +71,4 @@ assert.equal(testRental.updateAvailability("unknown plate", false), false);
 assert.equal(testRental.getCar("test1")?.isAvailable, false);
 assert.equal(testRental.getCar("test2")?.isAvailable, true);
 
-
+testRental.printAllCars();

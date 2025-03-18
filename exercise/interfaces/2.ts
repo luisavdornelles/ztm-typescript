@@ -28,6 +28,27 @@ type Fee = number;
 // Write your code here
 //
 
+interface PaymentMethod {
+    providerName: string;
+    calculateFee(amount: number): Fee;
+}
+
+class CreditCardPayment implements PaymentMethod {
+    providerName = "Credit Card";
+
+    calculateFee(amount: number): Fee {
+        return amount * 0.005;
+    }
+}
+
+class DebitCardPayment implements PaymentMethod {
+    providerName = "Debit Card";
+
+    calculateFee(amount: number): Fee {
+        return 0.30;
+    }
+}
+
 // Test cases
 assert.equal(new CreditCardPayment().calculateFee(100), 0.5);
 assert.equal(new DebitCardPayment().calculateFee(100), 0.30);

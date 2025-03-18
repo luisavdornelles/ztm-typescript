@@ -17,20 +17,38 @@ import { strict as assert } from "assert";
 
 // Item interface
 interface Item {
-  id: number;
-  name: string;
+    id: number;
+    name: string;
 }
 
 //
 // Create your `ItemNotFoundError` class here.
 //
+
+class ItemNotFoundError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "ItemNotFoundError";
+    }
+}
+
 // Create your `findItem` function here.
 //
 
+function findItem(list: Item[], id: number): Item {
+    const itemFound = list.find((item) => item.id === id);
+
+    if (itemFound === undefined) {
+        throw new ItemNotFoundError(`Item with ID ${id} not found.`);
+    }
+
+    return itemFound;
+}
+
 // Test cases
 const items: Item[] = [
-  { id: 1, name: "Item1" },
-  { id: 2, name: "Item2" }
+    { id: 1, name: "Item1" },
+    { id: 2, name: "Item2" }
 ];
 
 try {

@@ -50,3 +50,81 @@
 
 import { strict as assert } from "assert";
 
+class Health {
+    current: number;
+    max: number;
+
+    constructor(initial: number, max: number) {
+        this.current = initial < 0 ? 0 : initial;
+        this.max = max < 1 ? 1: max;
+    }
+
+    addHealth(amount: number): void {
+        if (amount <= 0) {
+            return;
+        }
+
+        const updatedHealth = this.current + amount;
+
+        if (updatedHealth > this.max) {
+            this.current = this.max;
+        } else {
+            this.current = updatedHealth;
+        }
+    }
+
+    removeHealth(amount: number): void {
+        if (amount <= 0) {
+            return;
+        }
+
+        const updatedHealth = this.current - amount;
+
+        if (updatedHealth < 0) {
+            this.current = 0;
+        } else {
+            this.current = updatedHealth;
+        }
+    }
+}
+
+const myHealth = new Health(100, 200);
+assert.deepEqual(myHealth.current, 100);
+assert.deepEqual(myHealth.max, 200);
+
+myHealth.addHealth(30)
+assert.deepEqual(myHealth.current, 130);
+
+myHealth.addHealth(500)
+assert.deepEqual(myHealth.current, 200);
+
+myHealth.removeHealth(100)
+assert.deepEqual(myHealth.current, 100);
+
+myHealth.removeHealth(500)
+assert.deepEqual(myHealth.current, 0);
+
+class TreasureChest {
+    content: string;
+    quantity: number;
+
+    constructor(content: string, quantity: number) {
+        this.content = content;
+        this.quantity = quantity;
+    }
+
+    open(): string {
+        const currentQnt = this.quantity;
+        if (currentQnt > 0) {
+            this.quantity = 0;
+        }
+        return `${currentQnt} ${this.content}`;
+    }
+}
+
+const myTreasure: TreasureChest = new TreasureChest("gold", 900);
+assert.deepEqual(myTreasure.content, "gold");
+assert.deepEqual(myTreasure.quantity, 900);
+
+assert.equal(myTreasure.open(), "900 gold");
+assert.equal(myTreasure.open(), "0 gold");
