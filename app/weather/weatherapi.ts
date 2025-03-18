@@ -100,15 +100,31 @@ export async function fetchWeatherData(
     apiUrl: string,
     lat: string,
     lon: string
-): Promise<CurrentWeatherApiResponse> {
+): Promise<CurrentWeather> {
     const options = {
         method: "GET",
         url: apiUrl,
         params: {
             latitude: lat,
             longitude: lon,
-            hourly: "",
-        }
+            hourly: "temperature_2m",
+            temperature_unit: "celsius",
+            windspeed_unit: "kmh",
+            current_weather: true,
+        },
+    };
+
+    const response = await axios.request(options);
+
+    if (response.status !== 200) {
+        throw new Error(`Failed to fecth weather data. API responded with status ${response.status}`);
     }
 
+    if (response.data?.current_weather === undefined) {
+        throw new Error("Received invalid API response");
+    }
+
+    const res = response.data.current_weather as CurrentWeatherApiResponse;
+
+    return new CurrentWeather(res);
 }
