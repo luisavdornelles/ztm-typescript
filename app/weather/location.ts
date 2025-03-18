@@ -9,7 +9,7 @@ export interface LocationInfo {
 }
 
 export async function fetchLocationData(
-    apiUrl:string,
+    apiUrl: string,
     locationName: string
 ): Promise<LocationInfo> {
     const options = {

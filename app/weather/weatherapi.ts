@@ -31,22 +31,19 @@ const weatherCodes: Record<number, string> = {
     99: "Thunderstorm with heavy hail",
 };
 
-export interface CurrentWeatherApiResponse {
-    current_weather: {
-        temperature: string;
-        windspeed: number;
-        winddirection: number;
-        weathercode: number;
-        is_day: number;
-        time: string;
-    }
+interface CurrentWeatherApiResponse {
+    temperature: number;
+    windspeed: number;
+    winddirection: number;
+    weathercode: number;
+    is_day: number;
+    time: string;
 }
 
 export interface Temperature {
     value: number;
-    unit: string
+    unit: string;
 }
-
 const formatTemperature = (temp: Temperature): string => `${temp.value}${temp.unit}`;
 
 export interface Wind {
@@ -57,8 +54,50 @@ export interface Wind {
 
 const formatWind = (wind: Wind): string => `${wind.speed}${wind.unit}`;
 
+export class CurrentWeather {
+    temperature: Temperature;
+    wind: Wind;
+    weathercode: number;
+    daytime: boolean;
+    time: string;
+
+    constructor(apiResponse: CurrentWeatherApiResponse) {
+        this.temperature = {
+            value: apiResponse.temperature,
+            unit: "C",
+        };
+        this.wind = {
+            speed: apiResponse.windspeed,
+            direction: apiResponse.winddirection,
+            unit: "kmh",
+        };
+        this.weathercode = apiResponse.weathercode;
+        this.daytime = apiResponse.is_day === 1;
+        this.time = apiResponse.time;
+    }
+
+    condition(): string {
+        return weatherCodes[this.weathercode];
+    }
+
+    format(): string {
+        const descriptionLen = 16;
+
+        const labelTemp = "Temperature".padStart(descriptionLen, " ");
+        const labelWind = "Wind Speed".padStart(descriptionLen, " ");
+        const labelCond = "Condition".padStart(descriptionLen, " ");
+
+        const formatted: string[] = [];
+        formatted.push(`${labelTemp}: ${formatTemperature(this.temperature)}`);
+        formatted.push(`${labelWind}: ${formatWind(this.wind)}`);
+        formatted.push(`${labelCond}: ${this.condition()}`);
+
+        return formatted.join("\n");
+    }
+}
+
 export async function fetchWeatherData(
-    apiUrl:string,
+    apiUrl: string,
     lat: string,
     lon: string
 ): Promise<CurrentWeatherApiResponse> {
