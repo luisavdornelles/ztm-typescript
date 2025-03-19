@@ -36,8 +36,7 @@ export async function fetchLocationData(
     }
 
     try {
-        const locationData: LocationInfo = locationInfoSchema.parse(response.data[0]);
-        return locationData;
+        return locationInfoSchema.parse(response.data[0]);
     } catch (err) {
         console.error(err);
         throw new Error(`Unable to find location information for ${locationName}`);
