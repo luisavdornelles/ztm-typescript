@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod" // eslint-disable-line
 import type { AxiosStatic } from "axios";
 
 // Free API key, safe to save in repo
@@ -36,7 +36,8 @@ export async function fetchLocationData(
     }
 
     try {
-        return locationInfoSchema.parse(response.data[0]);
+        const locationData: LocationInfo = locationInfoSchema.parse(response.data[0]);
+        return locationData;
     } catch (err) {
         console.error(err);
         throw new Error(`Unable to find location information for ${locationName}`);
