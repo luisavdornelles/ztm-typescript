@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios from "axios"; // eslint-disable-line
 
+// Free API key, safe to save in repo
 const API_KEY = "67d9c11706027690288422sae27514a";
 
 export interface LocationInfo {

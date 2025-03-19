@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"; // eslint-disable-line
 
 const weatherCodes: Record<number, string> = {
     0: "Clear sky",
