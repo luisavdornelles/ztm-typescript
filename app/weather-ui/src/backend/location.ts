@@ -1,15 +1,22 @@
-import axios from "axios";
+import { z } from "zod"
+import type { AxiosStatic } from "axios";
 
 // Free API key, safe to save in repo
 const API_KEY = "67d9c11706027690288422sae27514a";
 
-export interface LocationInfo {
-    lat: string;
-    lon: string;
-    display_name: string;
-}
+// TypeScript-first schema validation with static type inference
+// https://zod.dev/
+const locationInfoSchema = z.object({
+    lat: z.string(),
+    lon: z.string(),
+    display_name: z.string(),
+});
+
+// extract the TypeScript type of any schema with infer
+export type LocationInfo = z.infer<typeof locationInfoSchema>;
 
 export async function fetchLocationData(
+    axios: AxiosStatic,
     apiUrl: string,
     locationName: string
 ): Promise<LocationInfo> {
@@ -22,17 +29,16 @@ export async function fetchLocationData(
         }
     }
 
-    const response = await axios.request<LocationInfo[]>(options);
+    const response = await axios.request(options);
 
     if (response.status !== 200) {
         throw new Error(`Failed to fecth location data. API responded with status ${response.status}`);
     }
 
-    if (response.data.length === 0) {
+    try {
+        return locationInfoSchema.parse(response.data[0]);
+    } catch (err) {
+        console.error(err);
         throw new Error(`Unable to find location information for ${locationName}`);
     }
-
-    const locationData: LocationInfo = response.data[0];
-
-    return locationData;
 }
