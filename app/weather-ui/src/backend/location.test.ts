@@ -1,38 +1,33 @@
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import axios from "axios"; // eslint-disable-line
+import MockAdapter from "axios-mock-adapter"; // eslint-disable-line
 import { fetchLocationData } from "./location";
+import { GEOCODE_API_URL, SAMPLE_API_RESPONSE_GEO, API_KEY } from "./constants";
 
-const SAMPLE_API_RESPONSE = [
-    {
-        place_id: 287781008,
-        licence: 'Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright',
-        powered_by: 'Map Maker: https://maps.co',
-        osm_type: 'relation',
-        osm_id: 207359,
-        boundingbox: [Array],
-        lat: '34.0536909',
-        lon: '-118.242766',
-        display_name: 'Los Angeles, Los Angeles County, California, United States',
-        class: 'boundary',
-        type: 'administrative',
-        importance: 0.9738053728457621
-    },
-    {
-        place_id: 259239981,
-        licence: 'Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright',
-        powered_by: 'Map Maker: https://maps.co',
-        osm_type: 'way',
-        osm_id: 807458549,
-        boundingbox: [Array],
-        lat: '34.0708781',
-        lon: '-118.44684973165106',
-        display_name: 'University of California, Los Angeles, Bellagio Road, Bel Air, Bel-Air, Los Angeles, Los Angeles County, California, 90049, United States',
-        class: 'amenity',
-        type: 'university',
-        importance: 0.8181396344174214
-    },
-];
+it("should convert API request", async () => {
+    // makes `axios` to use the mock instead of making an actual request
+    const httpClient = new MockAdapter(axios);
 
-it("should get geocode location", async () => {
-    
+    httpClient.onGet(GEOCODE_API_URL, { params: { q: "test", api_key: API_KEY } })
+        .reply(200, SAMPLE_API_RESPONSE_GEO);
+  
+    await fetchLocationData("test");
+});
+
+it("throws error when response is not 200", async () => {
+    // makes `axios` to use the mock instead of making an actual request
+    const httpClient = new MockAdapter(axios);
+    httpClient.onGet(GEOCODE_API_URL, { params: { q: "test", api_key: undefined } }).reply(400, {});
+  
+    // this will throw an error if it fails, which will mark the test as a failure
+    await expect(fetchLocationData("test")).rejects.toThrow();
+});
+  
+it("throws error when the API response changes", async () => {
+    // makes `axios` to use the mock instead of making an actual request
+    const httpClient = new MockAdapter(axios);
+    httpClient.onGet(GEOCODE_API_URL, { params: { q: "test", api_key: undefined } }).reply(200, {});
+  
+    jest.spyOn(console, 'error').mockImplementation(jest.fn());
+    // this will throw an error if it fails, which will mark the test as a failure
+    await expect(fetchLocationData("test")).rejects.toThrow();
 });

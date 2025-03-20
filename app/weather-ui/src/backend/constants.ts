@@ -62,3 +62,82 @@ export const weatherCodes: Record<number, string> = {
     96: "Thunderstorm with slight hail",
     99: "Thunderstorm with heavy hail",
 };
+
+export const GEOCODE_API_URL = "https://geocode.maps.co/search";
+// Free API key, safe to save in repo
+export const API_KEY = "67d9c11706027690288422sae27514a";
+
+export const WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast";
+
+export const SAMPLE_API_RESPONSE_GEO = [
+    {
+        place_id: 287781008,
+        licence: 'Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright',
+        powered_by: 'Map Maker: https://maps.co',
+        osm_type: 'relation',
+        osm_id: 207359,
+        boundingbox: [Array],
+        lat: '34.0536909',
+        lon: '-118.242766',
+        display_name: 'Los Angeles, Los Angeles County, California, United States',
+        class: 'boundary',
+        type: 'administrative',
+        importance: 0.9738053728457621
+    },
+    {
+        place_id: 259239981,
+        licence: 'Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright',
+        powered_by: 'Map Maker: https://maps.co',
+        osm_type: 'way',
+        osm_id: 807458549,
+        boundingbox: [Array],
+        lat: '34.0708781',
+        lon: '-118.44684973165106',
+        display_name: 'University of California, Los Angeles, Bellagio Road, Bel Air, Bel-Air, Los Angeles, Los Angeles County, California, 90049, United States',
+        class: 'amenity',
+        type: 'university',
+        importance: 0.8181396344174214
+    },
+];
+
+export const SAMPLE_API_RESPONSE_WEATHER = {
+    latitude: 36.16438,
+    longitude: -115.143936,
+    generationtime_ms: 0.23496150970458984,
+    utc_offset_seconds: 0,
+    timezone: 'GMT',
+    timezone_abbreviation: 'GMT',
+    elevation: 620,
+    current_weather: {
+        temperature: 30.7,
+        windspeed: 15.3,
+        winddirection: 27,
+        weathercode: 0,
+        is_day: 1,
+        time: '2023-05-13T18:00'
+    },
+    hourly_units: { time: 'iso8601', temperature_2m: '°C' },
+    hourly: {
+        time: [
+            '2023-05-13T00:00', '2023-05-13T01:00',
+            '2023-05-13T02:00', '2023-05-13T03:00',
+            '2023-05-13T04:00', '2023-05-13T05:00',
+            '2023-05-13T06:00', '2023-05-13T07:00',
+            '2023-05-13T08:00', '2023-05-13T09:00',
+            '2023-05-13T10:00', '2023-05-13T11:00',
+            '2023-05-13T12:00', '2023-05-13T13:00',
+            '2023-05-13T14:00', '2023-05-13T15:00',
+            '2023-05-13T16:00', '2023-05-13T17:00',
+            '2023-05-13T18:00', '2023-05-13T19:00',
+            '2023-05-13T20:00', '2023-05-13T21:00',
+            '2023-05-13T22:00', '2023-05-13T23:00'
+        ],
+        temperature_2m: [
+            32.5, 32.1, 30.9, 28.7, 27.4,
+            26.4, 26, 26.1, 26, 24.7,
+            24.2, 23.8, 24, 23.3, 24.1,
+            25.7, 27.2, 28.6, 30.7, 31.6,
+            32.3, 33.4, 33.5, 33.5
+        ]
+    }
+}
