@@ -1,6 +1,6 @@
 import axios from "axios"; // eslint-disable-line
-import type { LocationInfo } from "./models/location.model"
 import { locationInfoSchema } from "./models/location.model"
+import type { LocationInfo } from "./models/location.model"
 
 // Free API key, safe to save in repo
 const API_KEY = "67d9c11706027690288422sae27514a";

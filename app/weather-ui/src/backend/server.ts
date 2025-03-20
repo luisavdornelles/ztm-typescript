@@ -5,9 +5,9 @@ import dotenv from "dotenv"; // eslint-disable-line
 import { fastify as fastify_fastify } from "fastify"; // eslint-disable-line
 import nunjucks from "nunjucks"; // eslint-disable-line
 import { z } from "zod"; // eslint-disable-line
+import { weatherCodeToImage } from "./constants";
 import { fetchLocationData } from "./location";
 import { fetchWeatherData } from "./weatherapi";
-import { weatherCodeToImage } from "./constants";
 
 dotenv.config();
 
