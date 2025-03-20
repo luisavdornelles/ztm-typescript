@@ -1,28 +1,17 @@
-import { z } from "zod" // eslint-disable-line
-import type { AxiosStatic } from "axios";
+import axios from "axios"; // eslint-disable-line
+import type { LocationInfo } from "./models/location.model"
+import { locationInfoSchema } from "./models/location.model"
 
 // Free API key, safe to save in repo
 const API_KEY = "67d9c11706027690288422sae27514a";
-
-// TypeScript-first schema validation with static type inference
-// https://zod.dev/
-const locationInfoSchema = z.object({
-    lat: z.string(),
-    lon: z.string(),
-    display_name: z.string(),
-});
-
-// extract the TypeScript type of any schema with infer
-export type LocationInfo = z.infer<typeof locationInfoSchema>;
+const GEOCODE_API_URL = "https://geocode.maps.co/search";
 
 export async function fetchLocationData(
-    axios: AxiosStatic,
-    apiUrl: string,
     locationName: string
 ): Promise<LocationInfo> {
     const options = {
         method: "GET",
-        url: apiUrl,
+        url: GEOCODE_API_URL,
         params: {
             q: locationName,
             api_key: API_KEY,
@@ -36,7 +25,7 @@ export async function fetchLocationData(
     }
 
     try {
-        return locationInfoSchema.parse(response.data[0]);
+        return locationInfoSchema.parse(response.data[0]); // eslint-disable-line
     } catch (err) {
         console.error(err);
         throw new Error(`Unable to find location information for ${locationName}`);
