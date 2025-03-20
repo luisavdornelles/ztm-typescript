@@ -1,13 +1,14 @@
 import path from "path";
-import formBody from "@fastify/formbody";
-import staticFiles from "@fastify/static";
-import axios from "axios";
-import dotenv from "dotenv";
-import { fastify as fastify_fastify } from "fastify";
-import nunjucks from "nunjucks";
-import { z } from "zod";
+import formBody from "@fastify/formbody"; // eslint-disable-line
+import staticFiles from "@fastify/static"; // eslint-disable-line
+import axios from "axios"; // eslint-disable-line
+import dotenv from "dotenv"; // eslint-disable-line
+import { fastify as fastify_fastify } from "fastify"; // eslint-disable-line
+import nunjucks from "nunjucks"; // eslint-disable-line
+import { z } from "zod"; // eslint-disable-line
 import { fetchLocationData } from "./location";
 import { fetchWeatherData } from "./weatherapi";
+import type { LocationInfo } from "./location";
 
 dotenv.config();
 
@@ -76,7 +77,7 @@ server.get("/", async (request, reply) => {
     const queryParams = request.query;
     try {
         const { location } = locationSchema.parse(queryParams);
-        const locationInfo = await fetchLocationData(HTTP_CLIENT, GEOCODE_API_URL, location);
+        const locationInfo: LocationInfo = await fetchLocationData(HTTP_CLIENT, GEOCODE_API_URL, location);
         const weatherInfo = await fetchWeatherData(HTTP_CLIENT, WEATHER_API_URL, locationInfo.lat, locationInfo.lon);
 
         const rendered = templates.render("weather.njk", {
@@ -91,15 +92,14 @@ server.get("/", async (request, reply) => {
                 highTemp: weatherInfo.highTemp(),
             }
         });
-
         await reply
-            .header("Content-Type", "text/html: charset=utf-8")
+            .header("Content-Type", "text/html; charset=utf-8")
             .send(rendered);
     } catch (err) {
         console.error(err);
-        const rendered = templates.render("get_started.njk", { environment });
+        const rendered = templates.render("get_started.njk", { environment, });
         await reply
-            .header("Content-Type", "text/html: charset=utf-8")
+            .header("Content-Type", "text/html; charset=utf-8")
             .send(rendered);
     }
 });
@@ -111,6 +111,6 @@ const start = async (): Promise<void> => {
         server.log.error(err);
         process.exit(1);
     }
-}
+};
 
 start();
