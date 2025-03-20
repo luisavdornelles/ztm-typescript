@@ -1,9 +1,9 @@
+import { strict as assert } from "assert";
 import axios from "axios"; // eslint-disable-line
 import MockAdapter from "axios-mock-adapter"; // eslint-disable-line
-import { fetchWeatherData } from "./weatherapi";
 import { WEATHER_API_URL, SAMPLE_API_RESPONSE_WEATHER } from "./constants";
 import { CurrentWeather } from "./models/weatherapi.model";
-import { strict as assert } from "assert";
+import { fetchWeatherData } from "./weatherapi";
 
 const params = {
     latitude: "0.0",

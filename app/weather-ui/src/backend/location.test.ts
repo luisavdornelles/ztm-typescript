@@ -1,7 +1,7 @@
 import axios from "axios"; // eslint-disable-line
 import MockAdapter from "axios-mock-adapter"; // eslint-disable-line
-import { fetchLocationData } from "./location";
 import { GEOCODE_API_URL, SAMPLE_API_RESPONSE_GEO, API_KEY } from "./constants";
+import { fetchLocationData } from "./location";
 
 it("should convert API request", async () => {
     // makes `axios` to use the mock instead of making an actual request

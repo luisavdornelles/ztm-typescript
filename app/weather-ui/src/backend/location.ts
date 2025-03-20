@@ -1,7 +1,7 @@
 import axios from "axios"; // eslint-disable-line
+import { GEOCODE_API_URL, API_KEY } from "./constants";
 import { locationInfoSchema } from "./models/location.model"
 import type { LocationInfo } from "./models/location.model"
-import { GEOCODE_API_URL, API_KEY } from "./constants";
 
 export async function fetchLocationData(
     locationName: string

@@ -1,6 +1,6 @@
 import axios from "axios"; // eslint-disable-line
-import { CurrentWeather, CurrentWeatherApiResponseSchema } from "./models/weatherapi.model"
 import { WEATHER_API_URL } from "./constants";
+import { CurrentWeather, CurrentWeatherApiResponseSchema } from "./models/weatherapi.model"
 
 export async function fetchWeatherData(
     lat: string,
