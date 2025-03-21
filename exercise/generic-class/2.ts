@@ -28,9 +28,45 @@ interface Book {
   year: number;
 }
 
+class Collection<T> {
+    private readonly items: T[] = [];
+
+    constructor(initialItems: T[]) {
+        this.items = initialItems;
+    }
+
+    public add(item: T): void {
+        this.items.push(item);
+    }
+
+    public remove(item: T): void {
+        const index = this.items.indexOf(item);
+        if (index !== -1) {
+            this.items.splice(index, 1);
+        }
+    }
+    
+    public get(): T[] {
+        return this.items;
+    }
+    
+    public filterItems(predicate: (item: T) => boolean): T[] {
+        return this.items.filter(predicate);
+    }
+}
+
 const book1 = { title: "Book 1", author: "Author 1", year: 2021 };
 const book2 = { title: "Book 2", author: "Author 2", year: 2022 };
 const book3 = { title: "Book 3", author: "Author 3", year: 2023 };
 const libraryBooks = [book1, book2];
 
+const bookCollection = new Collection<Book>(libraryBooks);
 
+bookCollection.add(book3);
+assert.equal(bookCollection.get().length, 3);
+
+bookCollection.remove(book1);
+assert.equal(bookCollection.get().length, 2);
+
+const filteredBooks = bookCollection.filterItems(book => book.year >= 2023);
+assert.equal(filteredBooks.length, 1);

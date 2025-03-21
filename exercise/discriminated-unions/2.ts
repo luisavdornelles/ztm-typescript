@@ -28,6 +28,37 @@
 
 import { strict as assert } from "assert";
 
+// exercise is aware that this is not the best practice
+type MessageNotification = { // eslint-disable-line
+    type: "message";
+    text: string;
+}
+
+type ErrorNotification = { // eslint-disable-line
+    type: "error";
+    code: number;
+    message: string;
+}
+
+
+type SuccessNotification = { // eslint-disable-line
+    type: "success";
+    text: string;
+}
+
+type Notification = MessageNotification | ErrorNotification | SuccessNotification;
+
+function getNotification(notification: Notification): string {
+    switch (notification.type) {
+        case "message":
+            return `Message: ${notification.text}`;
+        case "error":
+            return `Error ${notification.code}: ${notification.message}`;
+        case "success":
+            return `Success: ${notification.text}`;
+    }
+}
+
 // Test cases
 //
 // Format:

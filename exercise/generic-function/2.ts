@@ -15,3 +15,13 @@ import { strict as assert } from "assert";
 
 const numbers: number[] = [1, 2, 3, 4, 5];
 
+type Grades = number;
+const grades: Grades[] = [1, 2, 3, 4, 5];
+
+function getAverage<T extends number>(arr: T[]): number {
+    const sum = arr.reduce((a, b) => a + b, 0);
+    return sum / arr.length;
+}
+
+assert.equal(getAverage(numbers), 3);
+assert.equal(getAverage(grades), 3);

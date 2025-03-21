@@ -10,3 +10,43 @@
 // Useful links:
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
 //
+
+
+// Union type only allows us to assign these values:
+type Rgb = "red" | "green" | "blue";
+
+{
+    // 'as const' is similar to a union type, but allows iteration of
+    // each member.
+    //
+    // Array of our options:
+    const Color = ["red", "green", "blue"] as const;
+    // Create a type from the array members (same as union):
+    type Color = (typeof Color)[number];
+    // Colors can be assigned just like a union type:
+    const red: Color = "red";
+
+    // Iteration through all the colors is now possible because `Color` is
+    // an array:
+    for (const c of Color) {
+        console.log(c); // red, green, blue
+    }
+}
+
+{
+    // 'as const' can also be used with objects:
+    const Department = {
+        Executive: "top floor",
+        Sales: "middle floor",
+        Warehouse: "bottom floor",
+    } as const;
+    type Department = (typeof Department)[keyof typeof Department];
+
+    // `for..in` loop will allow us to iterate over the keys and values:
+    let k: keyof typeof Department;
+    for (k in Department) {
+        console.log(`key = ${k}, floor = ${Department[k]}`);
+    }
+
+    const exec: Department = Department.Executive;
+}
