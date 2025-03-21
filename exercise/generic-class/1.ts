@@ -19,3 +19,30 @@
 
 import { strict as assert } from "assert";
 
+class Queue<T> {
+    private elements: T[] = [];
+
+    public add(element: T): void {
+        this.elements.unshift(element);
+    }
+
+    public remove(): T | undefined {
+        return this.elements.pop();
+    }
+
+    public print(): string {
+        return this.elements.join(" ");
+    }
+}
+
+const arr = new Queue<string>();
+
+arr.add("Hello");
+arr.add("World");
+const hello = arr.remove();
+
+assert.equal(hello, "Hello");
+assert.deepEqual(arr.print(), "World");
+
+arr.remove();
+console.log(arr.print());
