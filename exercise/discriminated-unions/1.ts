@@ -15,5 +15,31 @@
 
 import { strict as assert } from "assert";
 
+// exercise is aware that this is not the best practice
+type Shape =
+    | { type: "square"; side: number }
+    | { type: "rectangle"; width: number; height: number }
+    | { type: "circle"; radius: number };  // eslint-disable-line
 
+function getArea(shape: Shape): number {
+    switch (shape.type) {
+        case "square":
+            return shape.side ** 2;
+        case "rectangle":
+            return shape.width * shape.height;
+        case "circle":
+            return Math.PI * (shape.radius ** 2);
+    }
+}
 
+const square: Shape = { type: "square", side: 5 };
+const sqArea = getArea(square);
+assert.equal(sqArea, 25);
+
+const rectangle: Shape = { type: "rectangle", width: 4, height: 6 };
+const reArea = getArea(rectangle);
+assert.equal(reArea, 24);
+
+const circle: Shape = { type: "circle", radius: 3 };
+const ciArea = getArea(circle);
+assert.equal(ciArea, Math.PI * 9);
