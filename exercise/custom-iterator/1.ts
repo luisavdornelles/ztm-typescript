@@ -18,6 +18,17 @@
 
 import { strict as assert } from "assert";
 
+function* range(start: number, end: number, step = 1): Generator<number> {
+    if (step > 0) {
+        for (let i = start; i <= end; i += step) {
+            yield i;
+        }
+    } else {
+        for (let i = start; i >= end; i += step) {
+            yield i;
+        }
+    }
+}
 
 // Test cases
 const result1 = Array.from(range(1, 5, 1));
