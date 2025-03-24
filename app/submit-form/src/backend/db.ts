@@ -1,5 +1,5 @@
-import { AsyncDatabase } from "promised-sqlite3";
-import { v4 as uuidv4 } from "uuid";
+import { AsyncDatabase } from "promised-sqlite3"; // eslint-disable-line
+import { v4 as uuidv4 } from "uuid"; // eslint-disable-line
 
 export interface User {
     id: number;
@@ -41,6 +41,28 @@ export class SqliteUserRepository implements UserRepository {
             "SELECT * FROM users WHERE id = ?", userId
         );
     }
+}
+
+export class SqliteSession {
+    constructor(private readonly db: AsyncDatabase) {}
+
+    async create(userId: number): Promise<string> {
+        const sessionId = uuidv4();
+        await this.db.run("INSERT INTO sessions (session_id, user_id) VALUES (?,?)", [sessionId, userId]);
+        return sessionId;
+    }
+
+    async get(sessionId: string): Promise<User | undefined> {
+        const userId: { user_id: number } | undefined = await this.db.get(
+            "SELECT user_id FROM sessions WHERE session_id = ?", 
+            sessionId
+        );
+        if (userId === undefined) {
+            return undefined;
+        }
+        const users = new SqliteUserRepository(this.db);
+        return await users.get(userId.user_id);
+      }
 }
 
 export async function connect(connectionString: string): Promise<AsyncDatabase> {
