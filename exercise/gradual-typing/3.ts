@@ -6,47 +6,50 @@
 // Both the JavaScript and TypeScript code are shown here for comparison. In
 // practice you would not duplicate the code.
 
+import { strict as assert } from "assert";
 
-const assert = require("assert");
+type MovieTitle = string;
+type ShowTime = `${number}:${number}`;
 
 class Theater {
-  constructor() {
-    this.showtimes = {};
-  }
-
-  addShowtime(movieTitle, showtime) {
-    if (!this.showtimes[movieTitle]) {
-      this.showtimes[movieTitle] = [];
+    showtimes: Record<MovieTitle, ShowTime[]>;
+    constructor() {
+        this.showtimes = {};
     }
-    this.showtimes[movieTitle].push(showtime);
-    console.log(`Added showtime ${showtime} for movie "${movieTitle}".`);
-  }
 
-  removeShowtime(movieTitle, showtime) {
-    if (this.showtimes[movieTitle]) {
-      const index = this.showtimes[movieTitle].indexOf(showtime);
-      if (index !== -1) {
-        this.showtimes[movieTitle].splice(index, 1);
-        console.log(`Removed showtime ${showtime} for movie "${movieTitle}".`);
-      } else {
-        console.log(`Showtime ${showtime} not found for movie "${movieTitle}".`);
-      }
-    } else {
-      console.log(`Movie "${movieTitle}" not found.`);
+    addShowtime(title: MovieTitle, time: ShowTime): void {
+        if (!(title in this.showtimes)) {
+            this.showtimes[title] = [];
+        }
+        this.showtimes[title].push(time);
+        console.log(`Added showtime ${time} for movie "${title}".`);
     }
-  }
 
-  listShowtimes(movieTitle) {
-    if (this.showtimes[movieTitle]) {
-      console.log(`Showtimes for "${movieTitle}": ${this.showtimes[movieTitle].join(', ')}`);
-    } else {
-      console.log(`No showtimes found for movie "${movieTitle}".`);
+    removeShowtime(title: MovieTitle, time: ShowTime): void {
+        if (title in this.showtimes) {
+            const index = this.showtimes[title].indexOf(time);
+            if (index !== -1) {
+                this.showtimes[title].splice(index, 1);
+                console.log(`Removed showtime ${time} for movie "${title}".`);
+            } else {
+                console.log(`Showtime ${time} not found for movie "${title}".`);
+            }
+        } else {
+            console.log(`Movie "${title}" not found.`);
+        }
     }
-  }
 
-  getShowtimes(movieTitle) {
-    return this.showtimes[movieTitle];
-  }
+    listShowtimes(title: MovieTitle): void {
+        if (title in this.showtimes) {
+            console.log(`Showtimes for "${title}": ${this.showtimes[title].join(', ')}`);
+        } else {
+            console.log(`No showtimes found for movie "${title}".`);
+        }
+    }
+
+    getShowtimes(title: MovieTitle): ShowTime[] {
+        return this.showtimes[title];
+    }
 }
 
 // Example usage
@@ -64,7 +67,7 @@ theater.listShowtimes("The Matrix"); // Outputs: Showtimes for "The Matrix": 21:
 theater.addShowtime("Inception", "20:00");
 
 // It's possible to add showtimes that aren't actual times, but this is not desired.
-theater.addShowtime("whoops", "whenever");
+// theater.addShowtime("whoops", "whenever");
 theater.listShowtimes("whoops"); // Outputs: Showtimes for "whoops": whenever
 
 // Test cases

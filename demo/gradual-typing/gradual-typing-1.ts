@@ -1,23 +1,28 @@
-// JavaScript
+// JavaScript turned into TypeScript
 
-function greetUsers(users): void {
-  users.forEach(user => {
-    console.log(`Hello, ${user.name}!`);
-  });
+function greetUsers(users: User[]): void {
+    users.forEach(user => {
+        console.log(`Hello, ${user.name}!`);
+    });
 }
 
-function getAverageAge(users): number {
-  let totalAge = 0;
-  users.forEach(user => {
-    totalAge += user.age;
-  });
-  return totalAge / users.length;
+function getAverageAge(users: User[]): number {
+    let totalAge = 0;
+    users.forEach(user => {
+        totalAge += user.age;
+    });
+    return totalAge / users.length;
 }
 
-const users = [
-  { name: "Alice", age: 25 },
-  { name: "Bob", age: 30 },
-  { name: "Charlie", age: 35 }
+interface User {
+    name: string;
+    age: number;
+}
+
+const users: User[] = [
+    { name: "Alice", age: 25 },
+    { name: "Bob", age: 30 },
+    { name: "Charlie", age: 35 }
 ];
 
 greetUsers(users);

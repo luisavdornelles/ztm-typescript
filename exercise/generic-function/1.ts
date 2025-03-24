@@ -15,3 +15,14 @@ import { strict as assert } from "assert";
 
 const numbers: number[] = [1, 2, 3, 4, 5];
 
+function findElementIndex<T>(arr: T[], element: T): number | undefined {
+    for(let i = 0; i < arr.length; i++) {
+        if (arr[i] === element) {
+            return i;
+        }
+    }
+    return undefined;
+}
+
+assert.equal(findElementIndex(numbers, 3), 2);
+assert.equal(findElementIndex(numbers, 6), undefined);

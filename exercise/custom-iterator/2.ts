@@ -21,10 +21,16 @@
 
 import { strict as assert } from "assert";
 
+function* idGenerator(prefix: string): Generator<string> {
+    for (let index = 1; index < 10; index++) {
+        yield `${prefix}${index}`;
+    }
+}
+
 // Create an instance of the idGenerator
 //
 // Replace `null` with a call to your `idGenerator` function.
-const itemIdGenerator = null;
+const itemIdGenerator = idGenerator("item-");
 
 // Generate three unique IDs
 const id1 = itemIdGenerator.next().value;
