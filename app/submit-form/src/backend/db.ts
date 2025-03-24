@@ -1,4 +1,4 @@
-import { AsyncDatabase } from 'promised-sqlite3';
+import { AsyncDatabase } from "promised-sqlite3";
 import { v4 as uuidv4 } from "uuid";
 
 export interface User {
@@ -19,9 +19,28 @@ export interface UserRepository {
 export class SqliteUserRepository implements UserRepository {
     constructor(private readonly db: AsyncDatabase) {}
 
-    create(user: User): Promise<User> {}
-    findByEmail(email: string): Promise<User | undefined> {}
-    get(userId: number): Promise<User | undefined> {}
+    async create(user: User): Promise<User> {
+        const userId: { id: number } = await this.db.get(
+            "INSERT INTO users (email, hashedPassword, agreedToTerms) VALUES (?, ?, ?) RETURNING id",
+            [user.email, user.hashedPassword, user.agreedToTerms]
+        );
+        return {
+            ...user,
+            id: userId.id,
+        }
+    }
+
+    async findByEmail(email: string): Promise<User | undefined> {
+        return await this.db.get(
+            "SELECT * FROM users WHERE email = ?", email
+        );
+    }
+    
+    async get(userId: number): Promise<User | undefined> {
+        return await this.db.get(
+            "SELECT * FROM users WHERE id = ?", userId
+        );
+    }
 }
 
 export async function connect(connectionString: string): Promise<AsyncDatabase> {
