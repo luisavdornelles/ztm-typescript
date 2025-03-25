@@ -11,6 +11,8 @@ import dotenv from "dotenv";
 import Fastify from "fastify";
 import nunjucks from "nunjucks";
 import { z } from "zod";
+import { checkComplexity } from "../shared/password-rules";
+import { checkUsername } from "../shared/username-rules";
 import { comparePassword, hashPassword } from "./auth";
 import { connect, newDb, SqliteSession, SqliteUserRepository } from "./db";
 import { clearFlashCookie, FLASH_MSG_COOKIE } from "./flash";
@@ -94,8 +96,9 @@ fastify.get("/", async (request, reply) => {
 });
 
 fastify.get("/signin", async (request, reply) => {
-    const rendered = templates.render("signin.njk", { environment });
-    return await reply
+    const serverMsg = readFlashCookie(request);
+    const rendered = templates.render("signin.njk", { server_msg: serverMsg, environment });
+    await reply
         .header("Content-Type", "text/html; charset=utf-8")
         .send(rendered);
 });
@@ -137,7 +140,8 @@ fastify.post("/account/signin", async (request, reply) => {
 });
 
 fastify.get("/signup", async (request, reply) => {
-    const rendered = templates.render("signup.njk", { environment });
+    const serverMsg = readFlashCookie(request);
+    const rendered = templates.render("signup.njk", { server_msg: serverMsg, environment });
     return await reply
         .header("Content-Type", "text/html; charset=utf-8")
         .send(rendered);
