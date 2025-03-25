@@ -5,13 +5,17 @@
 /* eslint-disable @typescript-eslint/return-await */
 import { AsyncDatabase } from "promised-sqlite3";
 import { v4 as uuidv4 } from "uuid";
-import type { HashedPassword } from "./auth";
+import { HashedPassword } from "./auth";
 
 export interface User {
     id: number;
     email: string;
     hashedPassword: HashedPassword;
     agreedToTerms: boolean;
+}
+
+interface UserDto extends Omit<User, "hashedPassword"> {
+    hashedPassword: string;
 }
 
 export interface UserRepository {
@@ -25,6 +29,20 @@ export interface UserRepository {
 export class SqliteUserRepository implements UserRepository {
     constructor(private readonly db: AsyncDatabase) {}
 
+    async get(userId: number): Promise<User | undefined> {
+        const user: UserDto | undefined = await this.db.get(
+            "SELECT * FROM users WHERE id = ?", userId
+        );
+        if (user !== undefined) {
+            return {
+                ...user,
+                hashedPassword: new HashedPassword(user.hashedPassword),
+            };
+        } else {
+            return undefined;
+        }
+    }
+
     async create(user: User): Promise<User> {
         const userId: { id: number } = await this.db.get(
             "INSERT INTO users (email, hashedPassword, agreedToTerms) VALUES (?, ?, ?) RETURNING id",
@@ -37,16 +55,17 @@ export class SqliteUserRepository implements UserRepository {
     }
 
     async findByEmail(email: string): Promise<User | undefined> {
-        return await this.db.get(
-            "SELECT * FROM users WHERE email = ?", email
+        const id: { id: number } | undefined = await this.db.get(
+            "SELECT id FROM users WHERE email = ?", email
         );
+        if (id !== undefined) {
+            return await this.get(id.id);
+        } else {
+            return undefined;
+        }
     }
     
-    async get(userId: number): Promise<User | undefined> {
-        return await this.db.get(
-            "SELECT * FROM users WHERE id = ?", userId
-        );
-    }
+    
 }
 
 export class SqliteSession {
