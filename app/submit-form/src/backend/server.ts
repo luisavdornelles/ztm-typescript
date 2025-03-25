@@ -13,6 +13,7 @@ import nunjucks from "nunjucks";
 import { z } from "zod";
 import { comparePassword, hashPassword } from "./auth";
 import { connect, newDb, SqliteSession, SqliteUserRepository } from "./db";
+import { clearFlashCookie, FLASH_MSG_COOKIE } from "./flash";
 import type { FastifyRequest } from "fastify";
 import type { FastifyReply } from "fastify/types/reply";
 
@@ -58,6 +59,9 @@ const fastify = Fastify({
     fastify.register(cookie, {
         secret: cookieSecret,
     });
+
+    // middleware to clear out the "flash" cookie on every request
+    fastify.register(clearFlashCookie);
   
     // serve static files
     fastify.register(staticFiles, {
@@ -73,6 +77,16 @@ function setSessionCookie(reply: FastifyReply, sessionId: string): void {
 
 function readSessionCookie(request: FastifyRequest): string | undefined {
     return request.cookies[SESSION_COOKIE];
+}
+
+function setFlashCookie(reply: FastifyReply, msg: string): void {
+    reply.setCookie(FLASH_MSG_COOKIE, msg, {
+        path: "/",
+    });
+}
+
+function readFlashCookie(request: FastifyRequest): string | undefined {
+    return request.cookies[FLASH_MSG_COOKIE];
 }
 
 fastify.get("/", async (request, reply) => {
@@ -110,7 +124,7 @@ fastify.post("/account/signin", async (request, reply) => {
         const sessions = new SqliteSession(db);
         const sessionId = await sessions.create(user.id);
         setSessionCookie(reply, sessionId);
-        
+
         return await reply.redirect("/welcome");
     } catch (e) {
         console.error(e);
