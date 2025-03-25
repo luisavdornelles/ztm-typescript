@@ -32,6 +32,9 @@ importers:
       fastify:
         specifier: ^5.2.1
         version: 5.2.1
+      fastify-plugin:
+        specifier: ^5.0.1
+        version: 5.0.1
       nunjucks:
         specifier: ^3.2.4
         version: 3.2.4(chokidar@3.6.0)
