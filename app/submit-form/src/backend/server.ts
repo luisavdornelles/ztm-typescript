@@ -12,9 +12,13 @@ import Fastify from "fastify";
 import nunjucks from "nunjucks";
 import { z } from "zod";
 import { comparePassword, hashPassword } from "./auth";
-import { connect, newDb, SqliteUserRepository } from "./db";
+import { connect, newDb, SqliteSession, SqliteUserRepository } from "./db";
+import type { FastifyRequest } from "fastify";
+import type { FastifyReply } from "fastify/types/reply";
 
 dotenv.config();
+
+const SESSION_COOKIE = "SESSION_ID";
 
 const environment = process.env.NODE_ENV;
 const cookieSecret = process.env.COOKIE_SECRET;
@@ -61,6 +65,16 @@ const fastify = Fastify({
     });
 }
 
+function setSessionCookie(reply: FastifyReply, sessionId: string): void {
+    reply.setCookie(SESSION_COOKIE, sessionId, {
+      path: "/",
+    });
+}
+
+function readSessionCookie(request: FastifyRequest): string | undefined {
+    return request.cookies[SESSION_COOKIE];
+}
+
 fastify.get("/", async (request, reply) => {
     await reply.redirect("/signin");
 });
@@ -93,6 +107,10 @@ fastify.post("/account/signin", async (request, reply) => {
         if (!passwordMatches) {
             return await reply.redirect("/signin");
         }
+        const sessions = new SqliteSession(db);
+        const sessionId = await sessions.create(user.id);
+        setSessionCookie(reply, sessionId);
+        
         return await reply.redirect("/welcome");
     } catch (e) {
         console.error(e);
@@ -132,7 +150,10 @@ fastify.post("/account/signup", async (request, reply) => {
             hashedPassword,
         };
         const user = await userRepository.create(newUser);
-        console.log(user);
+
+        const sessions = new SqliteSession(db);
+        const sessionId = await sessions.create(user.id);
+        setSessionCookie(reply, sessionId);
         
         return await reply.redirect("/welcome");
     } catch (e) {
