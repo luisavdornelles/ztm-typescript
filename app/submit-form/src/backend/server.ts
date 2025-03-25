@@ -105,6 +105,7 @@ fastify.post("/account/signin", async (request, reply) => {
     try {
       requestData = accountLoginRequestSchema.parse(request.body);
     } catch (err) {
+        setFlashCookie(reply, "There was an error processing your request.");
       return await reply.redirect("/signin");
     }
   
@@ -114,11 +115,13 @@ fastify.post("/account/signin", async (request, reply) => {
     try {
         const user = await userRepository.findByEmail(requestData.email);
         if (user === undefined) {
+            setFlashCookie(reply, "Invalid login credentials");
             await reply.redirect("/signin");
             return;
         }
         const passwordMatches = await comparePassword(requestData.password, user.hashedPassword);
         if (!passwordMatches) {
+            setFlashCookie(reply, "Invalid login credentials");
             return await reply.redirect("/signin");
         }
         const sessions = new SqliteSession(db);
@@ -128,6 +131,7 @@ fastify.post("/account/signin", async (request, reply) => {
         return await reply.redirect("/welcome");
     } catch (e) {
         console.error(e);
+        setFlashCookie(reply, "Invalid login credentials");
         return await reply.redirect("/signin");
     }
 });
@@ -144,10 +148,12 @@ fastify.post("/account/signup", async (request, reply) => {
     try {
         requestData = accountCreateRequestSchema.parse(request.body);
     } catch (e) {
+        setFlashCookie(reply, "There was an error processing your request.");
         return await reply.redirect("/signup");
     }
 
     if (requestData.agreedToTerms !== "on") {
+        setFlashCookie(reply, "You must agree to the terms to sign up.");
         return await reply.redirect("/signup");
     }
 
@@ -171,6 +177,7 @@ fastify.post("/account/signup", async (request, reply) => {
         
         return await reply.redirect("/welcome");
     } catch (e) {
+        setFlashCookie(reply, "That account already exists.");
         return await reply.redirect("/signup");
     }
 });
