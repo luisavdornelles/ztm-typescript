@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import Fastify from "fastify";
 import nunjucks from "nunjucks";
 import { z } from "zod";
-import { connect, newDb } from "./db";
+import { connect, newDb, SqliteUserRepository } from "./db";
 
 dotenv.config();
 
@@ -20,6 +20,14 @@ if (cookieSecret === undefined) {
 
 const templates = new nunjucks.Environment(new nunjucks.FileSystemLoader("src/backend/templates"));
 const USERS_DB = "./users.sqlite";
+
+const accountCreateRequestSchema = z.object({
+    email: z.string(),
+    password: z.string(),
+    agreedToTerms: z.string().optional(),
+});
+  
+type AccountCreateRequest = z.infer<typeof accountCreateRequestSchema>;
 
 const fastify = Fastify({
     logger: true,
@@ -57,6 +65,35 @@ fastify.get("/signup", async (request, reply) => {
     return await reply
         .header("Content-Type", "text/html; charset=utf-8")
         .send(rendered);
+});
+
+fastify.post("/account/signup", async (request, reply) => {
+    let requestData: AccountCreateRequest;
+    try {
+        requestData = accountCreateRequestSchema.parse(request.body);
+    } catch (e) {
+        return await reply.redirect("/signup");
+    }
+
+    if (requestData.agreedToTerms !== "on") {
+        return await reply.redirect("/signup");
+    }
+
+    const db = await connect(USERS_DB);
+    const userRepository = new SqliteUserRepository(db);
+
+    try {
+        const newUser = {
+            ...requestData,
+            id: 0, // database will set appropriate ID number
+            agreedToTerms: true,
+            hashedPassword: "FIXME",
+        };
+        const user = await userRepository.create(newUser);
+        return await reply.redirect("/welcome");
+    } catch (e) {
+        return await reply.redirect("/signup");
+    }
 });
 
 const start = async (): Promise<void> => {
