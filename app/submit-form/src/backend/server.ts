@@ -91,6 +91,28 @@ function readFlashCookie(request: FastifyRequest): string | undefined {
     return request.cookies[FLASH_MSG_COOKIE];
 }
 
+fastify.get("/welcome", async (request, reply) => {
+    const sessionId = readSessionCookie(request);
+    if (sessionId === undefined) {
+        setFlashCookie(reply, "Please sign in to continue.");
+        return await reply.redirect("/signin");
+    }
+  
+    const db = await connect(USERS_DB);
+    const sessions = new SqliteSession(db);
+    const user = await sessions.get(sessionId);
+    if (user === undefined) {
+        setFlashCookie(reply, "Your session has expired. Please sign in to continue.");
+        await reply.redirect("/signin");
+        return;
+    }
+  
+    const rendered = templates.render("welcome.njk", { environment, email: user.email });
+    await reply
+        .header("Content-Type", "text/html; charset=utf-8")
+        .send(rendered);
+});
+
 fastify.get("/", async (request, reply) => {
     await reply.redirect("/signin");
 });
@@ -158,6 +180,20 @@ fastify.post("/account/signup", async (request, reply) => {
 
     if (requestData.agreedToTerms !== "on") {
         setFlashCookie(reply, "You must agree to the terms to sign up.");
+        return await reply.redirect("/signup");
+    }
+
+    const usernameFailures = checkUsername(requestData.email);
+    if (usernameFailures.length > 0) {
+        const formattedErrors = usernameFailures.join("<br>");
+        setFlashCookie(reply, formattedErrors);
+        return await reply.redirect("/signup");
+    }
+
+    const complexityFailures = checkComplexity(requestData.password);
+    if (complexityFailures.length > 0) {
+        const formattedErrors = complexityFailures.join("<br>");
+        setFlashCookie(reply, formattedErrors);
         return await reply.redirect("/signup");
     }
 
